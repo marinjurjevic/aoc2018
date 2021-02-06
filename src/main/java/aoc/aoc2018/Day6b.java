@@ -6,12 +6,12 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Day6 {
+public class Day6b {
+    public static final int THRESHOLD_DISTANCE = 10000;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String s;
-        
         // find maximum values for bounding box 
         int x_max = 0;
         int y_max = 0;
@@ -31,60 +31,33 @@ public class Day6 {
 
 
         int n = points.size();
-        Point box = new Point(x_max, y_max);
-        System.out.println("Bounding box: " + box + " n = " + n);
-
         Point[] sites = new Point[n];
-        int[] sitesCounter = new int[n];
         points.toArray(sites);
+        
+        int safeArea = 0;
 
         for(int i = 0; i < x_max; i++)
         {
             for(int j = 0; j < y_max; j++)
             {
                 Point test = new Point(i,j);
-                int min_dist = Integer.MAX_VALUE;
-                int min_index = 0;
+                int test_distance_sum = 0;
                 for(int k = 0; k < n; k++)
                 {
-                    int test_dist = Point.distance(test, sites[k]);
-                    if(test_dist < min_dist)
-                    {
-                        min_dist = test_dist;
-                        min_index = k;
-                    }else if (test_dist == min_dist)
-                    {
-                        min_index = -1;
-                    }
+                    test_distance_sum += Point.distance(test, sites[k]);
                 }
 
-                if(min_index != -1)
+                if(test_distance_sum < THRESHOLD_DISTANCE)
                 {
-                    if(i == 0 || i == x_max - 1 || j == 0 || j == y_max -1)
-                    {
-                        sitesCounter[min_index] = -1;
-                    }
-                    
-                    if(sitesCounter[min_index] != -1)
-                    {
-                        sitesCounter[min_index]++;
-                    }
-
+                    safeArea++;
                 }
+
             }
 
         }
+
+        System.out.println("Safe area: " + safeArea);
         
-        int maxArea = 0;
-        for(int i = 0; i < n; i++)
-        {
-            if(sitesCounter[i] > maxArea)
-            {
-                maxArea = sitesCounter[i];
-            }
-            System.out.println(i + " = " + sitesCounter[i]);
-        }
-        System.out.println("Max area: " + maxArea);
 
     }
 
