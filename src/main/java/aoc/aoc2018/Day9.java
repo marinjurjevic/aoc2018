@@ -2,7 +2,6 @@ package aoc.aoc2018;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
